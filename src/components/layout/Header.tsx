@@ -24,7 +24,7 @@ export const Header: React.FC<HeaderProps> = () => {
   );
 
   // Also check token from cookies as fallback during rehydration
-  const tokenFromCookie = Cookies.get("token");
+  const tokenFromCookie = Cookies.get("authToken");
 
   // Determine if user is authenticated (either from Redux or cookie)
   const isAuthenticated = reduxIsAuth || !!tokenFromCookie;
