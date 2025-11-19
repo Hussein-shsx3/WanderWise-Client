@@ -9,14 +9,14 @@ import {
   PURGE,
   REGISTER,
 } from "redux-persist";
-import storage from "redux-persist/lib/storage";
+import storage from "./storage";
 import authReducer from "./slices/authSlice";
 import itineraryReducer from "./slices/itinerarySlice";
 
 const persistConfig = {
   key: "wanderwise-root",
   storage,
-  whitelist: ["auth"], // Only persist auth state
+  whitelist: ["auth"],
 };
 
 const persistedAuthReducer = persistReducer(persistConfig, authReducer);

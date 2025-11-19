@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, ReactNode } from "react";
+import { useEffect, useState, ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { useAppSelector } from "@/redux/hooks";
+import { useAuthToken } from "@/hooks/useAuthToken";
 import { Spinner } from "@/components/ui/feedback/Spinner";
 import type { RootState } from "@/redux/store";
 
@@ -12,23 +13,32 @@ interface ProtectedRouteProps {
 
 export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   const router = useRouter();
-  const { isAuthenticated } = useAppSelector((state: RootState) => state.auth);
-  const [isChecking, setIsChecking] = useState(true);
+  const { isAuthenticated: reduxAuth, token: reduxToken } = useAppSelector((state: RootState) => state.auth);
+  const { token: cookieToken, isLoading: cookieLoading } = useAuthToken();
+  const [isHydrated, setIsHydrated] = useState(false);
 
   useEffect(() => {
-    // Wait for Redux state to be rehydrated
-    if (isAuthenticated === null) {
-      return; // Still loading
+    // Mark that we've done initial client-side setup
+    setIsHydrated(true);
+  }, []);
+
+  useEffect(() => {
+    // Wait for hydration and cookie check to complete
+    if (!isHydrated || cookieLoading) {
+      return;
     }
 
-    if (!isAuthenticated) {
+    // Check if user is authenticated
+    const hasAuth = reduxAuth || !!reduxToken || !!cookieToken;
+
+    // If not authenticated after hydration, redirect to login
+    if (!hasAuth) {
       router.push("/auth/login");
-    } else {
-      setIsChecking(false);
     }
-  }, [isAuthenticated, router]);
+  }, [reduxAuth, reduxToken, cookieToken, isHydrated, cookieLoading, router]);
 
-  if (isChecking) {
+  // Show loading while hydrating or checking cookies
+  if (!isHydrated || cookieLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <Spinner />
@@ -36,5 +46,14 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
     );
   }
 
+  // Check if user has auth token from Redux or cookies
+  const hasAuth = reduxAuth || !!reduxToken || !!cookieToken;
+
+  // If not authenticated, render nothing (redirect already happened in effect)
+  if (!hasAuth) {
+    return null;
+  }
+
+  // Render children if authenticated
   return <>{children}</>;
 };

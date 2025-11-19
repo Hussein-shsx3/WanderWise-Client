@@ -7,8 +7,8 @@ import { Container } from "@/components/Container";
 import { Logo } from "@/components/Logo";
 import { Menu, X } from "lucide-react";
 import { useAppSelector } from "@/redux/hooks";
+import { useAuthToken } from "@/hooks/useAuthToken";
 import type { RootState } from "@/redux/store";
-import Cookies from "js-cookie";
 
 interface HeaderProps {
   isAuthenticated?: boolean;
@@ -16,23 +16,28 @@ interface HeaderProps {
 
 export const Header: React.FC<HeaderProps> = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  const [isHydrated, setIsHydrated] = useState(false);
 
   // Get auth state from Redux
-  const { isAuthenticated: reduxIsAuth, user } = useAppSelector(
+  const { isAuthenticated: reduxIsAuth, token: reduxToken } = useAppSelector(
     (state: RootState) => state.auth
   );
 
-  // Also check token from cookies as fallback during rehydration
-  const tokenFromCookie = Cookies.get("token");
+  // Get auth state from cookies as fallback
+  const { token: cookieToken, isLoading: cookieLoading } = useAuthToken();
 
-  // Determine if user is authenticated (either from Redux or cookie)
-  const isAuthenticated = reduxIsAuth || !!tokenFromCookie;
-
-  // Handle client-side mounting
+  // Handle client-side hydration
   useEffect(() => {
-    setMounted(true);
+    // Small delay to ensure Redux has rehydrated from localStorage
+    const timer = setTimeout(() => {
+      setIsHydrated(true);
+    }, 50);
+    return () => clearTimeout(timer);
   }, []);
+
+  // Use Redux auth state, but show false during hydration to prevent flash
+  // Fallback to cookie token if Redux token not available yet
+  const isAuthenticated = isHydrated && (reduxIsAuth || !!reduxToken || !!cookieToken);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -41,20 +46,6 @@ export const Header: React.FC<HeaderProps> = () => {
   const closeMenu = () => {
     setIsMenuOpen(false);
   };
-
-  // Don't render navigation until mounted (prevents hydration mismatch)
-  if (!mounted) {
-    return (
-      <header className="bg-white shadow-sm sticky top-0 z-50">
-        <Container>
-          <div className="flex items-center justify-between h-16">
-            <Logo size="md" />
-            {/* Empty space while loading */}
-          </div>
-        </Container>
-      </header>
-    );
-  }
 
   return (
     <header className="bg-white shadow-sm sticky top-0 z-50">

@@ -7,7 +7,6 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { store, persistor } from "@/redux/store";
 import queryClient from "@/lib/react-query";
 import { Spinner } from "@/components/ui/feedback/Spinner";
-import { useRouter } from "next/navigation";
 
 interface AppProvidersProps {
   children: React.ReactNode;
@@ -24,33 +23,24 @@ const LoadingScreen = () => (
 
 export default function AppProviders({ children }: AppProvidersProps) {
   const [isClient, setIsClient] = useState(false);
-  const router = useRouter();
-  const [isRouterReady, setIsRouterReady] = useState(false);
 
   useEffect(() => {
     setIsClient(true);
-    if (router) {
-      setIsRouterReady(true);
-    }
-  }, [router]);
-
-  if (!isClient) {
-    return (
-      <Provider store={store}>
-        <QueryClientProvider client={queryClient}>
-          {children}
-        </QueryClientProvider>
-      </Provider>
-    );
-  }
+  }, []);
 
   return (
     <Provider store={store}>
-      <PersistGate loading={<LoadingScreen />} persistor={persistor}>
+      {isClient ? (
+        <PersistGate loading={<LoadingScreen />} persistor={persistor}>
+          <QueryClientProvider client={queryClient}>
+            {children}
+          </QueryClientProvider>
+        </PersistGate>
+      ) : (
         <QueryClientProvider client={queryClient}>
-          {isRouterReady ? children : <LoadingScreen />}
+          {children}
         </QueryClientProvider>
-      </PersistGate>
+      )}
     </Provider>
   );
 }
