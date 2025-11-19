@@ -10,6 +10,7 @@ import { useLogin } from "@/hooks/useAuthQuery";
 import { useAppDispatch } from "@/redux/hooks";
 import { setAuth } from "@/redux/slices/authSlice";
 import { ArrowRight, Mail, Lock } from "lucide-react";
+import Cookies from "js-cookie";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -21,7 +22,10 @@ export default function LoginPage() {
     password: "",
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [toast, setToast] = useState<{ type: "success" | "error"; message: string } | null>(null);
+  const [toast, setToast] = useState<{
+    type: "success" | "error";
+    message: string;
+  } | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -56,6 +60,13 @@ export default function LoginPage() {
     login(formData, {
       onSuccess: (response) => {
         if (response.success && response.user && response.token) {
+          // Store token in cookie
+          Cookies.set("authToken", response.token, { expires: 7 });
+          if (response.refreshToken) {
+            Cookies.set("refreshToken", response.refreshToken, { expires: 30 });
+          }
+
+          // Update Redux state
           dispatch(
             setAuth({
               user: response.user,
@@ -63,8 +74,13 @@ export default function LoginPage() {
               refreshToken: response.refreshToken,
             })
           );
+
           setToast({ type: "success", message: "Welcome back! 🎉" });
-          setTimeout(() => router.push("/dashboard"), 1500);
+
+          // Navigate after a short delay to ensure state is updated
+          setTimeout(() => {
+            router.push("/dashboard");
+          }, 500);
         }
       },
       onError: (error) => {
@@ -108,6 +124,7 @@ export default function LoginPage() {
             onChange={handleChange}
             error={errors.email}
             required
+            disabled={isPending}
             className="pl-12"
           />
         </div>
@@ -126,6 +143,7 @@ export default function LoginPage() {
             onChange={handleChange}
             error={errors.password}
             required
+            disabled={isPending}
             className="pl-12"
           />
         </div>
@@ -136,7 +154,10 @@ export default function LoginPage() {
             <input type="checkbox" className="rounded" />
             <span>Remember me</span>
           </label>
-          <Link href="/auth/forgot-password" className="text-blue-300 hover:text-blue-200 transition">
+          <Link
+            href="/auth/forgot-password"
+            className="text-blue-300 hover:text-blue-200 transition"
+          >
             Forgot password?
           </Link>
         </div>
@@ -157,7 +178,10 @@ export default function LoginPage() {
           ) : (
             <>
               Sign In
-              <ArrowRight size={18} className="group-hover:translate-x-1 transition" />
+              <ArrowRight
+                size={18}
+                className="group-hover:translate-x-1 transition"
+              />
             </>
           )}
         </Button>
@@ -166,8 +190,11 @@ export default function LoginPage() {
       {/* Sign Up Link */}
       <div className="text-center">
         <p className="text-white/70">
-          Don't have an account?{" "}
-          <Link href="/auth/register" className="text-blue-300 font-semibold hover:text-blue-200 transition">
+          Don&apos;t have an account?{" "}
+          <Link
+            href="/auth/register"
+            className="text-blue-300 font-semibold hover:text-blue-200 transition"
+          >
             Create one now
           </Link>
         </p>

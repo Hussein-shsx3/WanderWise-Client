@@ -10,18 +10,24 @@ interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
 }
 
 const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
-  ({ label, error, helperText, options = [], className = "", ...props }, ref) => {
+  (
+    { label, error, helperText, options = [], className = "", ...props },
+    ref
+  ) => {
     const selectClasses = `
-      w-full px-4 py-2 text-sm border rounded-lg
+      w-full px-4 py-3 text-sm border-2 rounded-xl
+      text-gray-900 placeholder-gray-400
+      bg-white hover:bg-gray-50
       focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
-      ${error ? "border-red-500" : "border-gray-300"}
+      transition-all duration-300
+      ${error ? "border-red-500" : "border-gray-300 hover:border-gray-400"}
       ${className}
     `;
 
     return (
       <div className="w-full">
         {label && (
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-semibold text-gray-900 mb-2">
             {label}
             {props.required && <span className="text-red-500 ml-1">*</span>}
           </label>
@@ -34,9 +40,9 @@ const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
             </option>
           ))}
         </select>
-        {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
+        {error && <p className="mt-2 text-sm text-red-500">{error}</p>}
         {helperText && !error && (
-          <p className="mt-1 text-sm text-gray-500">{helperText}</p>
+          <p className="mt-2 text-sm text-gray-600">{helperText}</p>
         )}
       </div>
     );

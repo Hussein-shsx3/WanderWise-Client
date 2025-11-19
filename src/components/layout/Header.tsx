@@ -30,9 +30,6 @@ export const Header: React.FC<HeaderProps> = ({ isAuthenticated = false }) => {
               <Link href="/itineraries" className="text-slate-700 hover:text-blue-600 font-medium transition">
                 My Trips
               </Link>
-              <Link href="/profile" className="text-slate-700 hover:text-blue-600 font-medium transition">
-                Profile
-              </Link>
               <button className="gradient-bg text-white px-4 py-2 rounded-lg font-medium hover:shadow-lg transition">
                 Logout
               </button>
@@ -69,9 +66,6 @@ export const Header: React.FC<HeaderProps> = ({ isAuthenticated = false }) => {
                 </Link>
                 <Link href="/itineraries" className="text-slate-700 hover:text-blue-600 font-medium py-2">
                   My Trips
-                </Link>
-                <Link href="/profile" className="text-slate-700 hover:text-blue-600 font-medium py-2">
-                  Profile
                 </Link>
                 <button className="gradient-bg text-white px-4 py-2 rounded-lg font-medium">
                   Logout

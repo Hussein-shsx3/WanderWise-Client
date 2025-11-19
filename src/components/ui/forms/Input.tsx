@@ -11,26 +11,27 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ label, error, helperText, className = "", ...props }, ref) => {
     const inputClasses = `
-      w-full px-4 py-3 text-sm backdrop-blur-md bg-white/20 border-2 rounded-xl
-      text-white placeholder-white/50
-      focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent
+      w-full px-4 py-3 text-sm border-2 rounded-xl
+      text-gray-900 placeholder-gray-400
+      bg-white hover:bg-gray-50
+      focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
       transition-all duration-300
-      ${error ? "border-red-400/50" : "border-white/30 hover:border-white/50"}
+      ${error ? "border-red-500" : "border-gray-300 hover:border-gray-400"}
       ${className}
     `;
 
     return (
       <div className="w-full">
         {label && (
-          <label className="block text-sm font-semibold text-white/90 mb-2">
+          <label className="block text-sm font-semibold text-gray-900 mb-2">
             {label}
-            {props.required && <span className="text-red-300 ml-1">*</span>}
+            {props.required && <span className="text-red-500 ml-1">*</span>}
           </label>
         )}
         <input ref={ref} className={inputClasses} {...props} />
-        {error && <p className="mt-2 text-sm text-red-300">{error}</p>}
+        {error && <p className="mt-2 text-sm text-red-500">{error}</p>}
         {helperText && !error && (
-          <p className="mt-2 text-sm text-white/60">{helperText}</p>
+          <p className="mt-2 text-sm text-gray-600">{helperText}</p>
         )}
       </div>
     );

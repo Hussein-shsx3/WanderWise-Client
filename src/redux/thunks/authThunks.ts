@@ -16,12 +16,31 @@ export const register = createAsyncThunk(
   async (data: RegisterDTO, { rejectWithValue }) => {
     try {
       const response = await authService.register(data);
+
+      console.log("Register response:", response);
+
       if (response.success && response.token) {
-        Cookies.set("authToken", response.token, { expires: 7 });
+        // Save token to cookies with secure settings
+        Cookies.set("authToken", response.token, {
+          expires: 7,
+          sameSite: "lax",
+          secure: process.env.NODE_ENV === "production",
+        });
+
         if (response.refreshToken) {
-          Cookies.set("refreshToken", response.refreshToken, { expires: 30 });
+          Cookies.set("refreshToken", response.refreshToken, {
+            expires: 30,
+            sameSite: "lax",
+            secure: process.env.NODE_ENV === "production",
+          });
         }
+
+        console.log(
+          "Token saved to cookies:",
+          Cookies.get("authToken")?.substring(0, 20)
+        );
       }
+
       return response;
     } catch (error) {
       return rejectWithValue(handleAuthError(error, "Registration failed"));
@@ -34,12 +53,31 @@ export const login = createAsyncThunk(
   async (data: LoginDTO, { rejectWithValue }) => {
     try {
       const response = await authService.login(data);
+
+      console.log("Login response:", response);
+
       if (response.success && response.token) {
-        Cookies.set("authToken", response.token, { expires: 7 });
+        // Save token to cookies with secure settings
+        Cookies.set("authToken", response.token, {
+          expires: 7,
+          sameSite: "lax",
+          secure: process.env.NODE_ENV === "production",
+        });
+
         if (response.refreshToken) {
-          Cookies.set("refreshToken", response.refreshToken, { expires: 30 });
+          Cookies.set("refreshToken", response.refreshToken, {
+            expires: 30,
+            sameSite: "lax",
+            secure: process.env.NODE_ENV === "production",
+          });
         }
+
+        console.log(
+          "Token saved to cookies:",
+          Cookies.get("authToken")?.substring(0, 20)
+        );
       }
+
       return response;
     } catch (error) {
       return rejectWithValue(handleAuthError(error, "Login failed"));
@@ -66,8 +104,18 @@ export const logout = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       await authService.logout();
+
+      // Clear cookies
       Cookies.remove("authToken");
       Cookies.remove("refreshToken");
+
+      // Clear localStorage
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("persist:wanderwise-root");
+      }
+
+      console.log("Logout successful - tokens cleared");
+
       return null;
     } catch (error) {
       return rejectWithValue(handleAuthError(error, "Logout failed"));

@@ -46,4 +46,9 @@ export const authService = {
     Cookies.remove("authToken");
     Cookies.remove("refreshToken");
   },
+
+  verifyAuth: async (): Promise<AuthResponse> => {
+    const response = await axiosInstance.get("/users/me");
+    return response.data;
+  },
 };

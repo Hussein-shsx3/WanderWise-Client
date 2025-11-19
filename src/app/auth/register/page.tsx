@@ -10,12 +10,13 @@ import { useRegister } from "@/hooks/useAuthQuery";
 import { useAppDispatch } from "@/redux/hooks";
 import { setAuth } from "@/redux/slices/authSlice";
 import { ArrowRight, User, Mail, Lock, CheckCircle } from "lucide-react";
+import Cookies from "js-cookie";
 
 export default function RegisterPage() {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { mutate: register, isPending } = useRegister();
-  
+
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -24,7 +25,10 @@ export default function RegisterPage() {
     confirmPassword: "",
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [toast, setToast] = useState<{ type: "success" | "error"; message: string } | null>(null);
+  const [toast, setToast] = useState<{
+    type: "success" | "error";
+    message: string;
+  } | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -37,7 +41,8 @@ export default function RegisterPage() {
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
 
-    if (!formData.firstName.trim()) newErrors.firstName = "First name is required";
+    if (!formData.firstName.trim())
+      newErrors.firstName = "First name is required";
     if (!formData.lastName.trim()) newErrors.lastName = "Last name is required";
     if (!formData.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
       newErrors.email = "Valid email is required";
@@ -71,6 +76,15 @@ export default function RegisterPage() {
       {
         onSuccess: (response) => {
           if (response.success && response.user && response.token) {
+            // Store token in cookie
+            Cookies.set("authToken", response.token, { expires: 7 });
+            if (response.refreshToken) {
+              Cookies.set("refreshToken", response.refreshToken, {
+                expires: 30,
+              });
+            }
+
+            // Update Redux state
             dispatch(
               setAuth({
                 user: response.user,
@@ -78,12 +92,18 @@ export default function RegisterPage() {
                 refreshToken: response.refreshToken,
               })
             );
+
             setToast({ type: "success", message: "Welcome to WanderWise! 🎉" });
-            setTimeout(() => router.push("/dashboard"), 1500);
+
+            // Navigate after a short delay
+            setTimeout(() => {
+              router.push("/dashboard");
+            }, 500);
           }
         },
         onError: (error) => {
-          const message = typeof error === "string" ? error : "Registration failed";
+          const message =
+            typeof error === "string" ? error : "Registration failed";
           setToast({ type: "error", message });
         },
       }
@@ -94,8 +114,12 @@ export default function RegisterPage() {
     <div className="space-y-8">
       {/* Header */}
       <div className="text-center">
-        <h1 className="text-3xl font-medium text-white mb-3">Create Your Account</h1>
-        <p className="text-white/70">Start your amazing journey with WanderWise</p>
+        <h1 className="text-3xl font-medium text-white mb-3">
+          Create Your Account
+        </h1>
+        <p className="text-white/70">
+          Start your amazing journey with WanderWise
+        </p>
       </div>
 
       {/* Toast */}
@@ -237,7 +261,10 @@ export default function RegisterPage() {
           ) : (
             <>
               Create Account
-              <ArrowRight size={18} className="group-hover:translate-x-1 transition" />
+              <ArrowRight
+                size={18}
+                className="group-hover:translate-x-1 transition"
+              />
             </>
           )}
         </Button>
@@ -247,7 +274,10 @@ export default function RegisterPage() {
       <div className="text-center">
         <p className="text-white/70">
           Already have an account?{" "}
-          <Link href="/auth/login" className="text-blue-300 font-semibold hover:text-blue-200 transition">
+          <Link
+            href="/auth/login"
+            className="text-blue-300 font-semibold hover:text-blue-200 transition"
+          >
             Sign in
           </Link>
         </p>
