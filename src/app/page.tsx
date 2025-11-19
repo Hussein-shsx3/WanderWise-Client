@@ -1,9 +1,14 @@
-const Home = () => {
-  return (
-    <div>
-      
-    </div>
-  );
-}
+"use client";
 
-export default Home;
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+
+export default function Page() {
+  const router = useRouter();
+
+  useEffect(() => {
+    router.replace("/home");
+  }, [router]);
+
+  return null;
+}
