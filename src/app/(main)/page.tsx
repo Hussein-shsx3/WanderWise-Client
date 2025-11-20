@@ -9,6 +9,7 @@ import { useAppSelector } from "@/redux/hooks";
 import { Sparkles, MapPin, Brain, Zap, ArrowRight, Globe } from "lucide-react";
 
 export default function HomePage() {
+  
   const router = useRouter();
   const { isAuthenticated } = useAppSelector((state) => state.auth);
 
