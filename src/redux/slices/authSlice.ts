@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AuthState, User } from "@/types/auth";
-import { register, login, logout, verifyEmail } from "../thunks/authThunks";
+import { register, login, logout } from "../thunks/authThunks";
 
 const initialState: AuthState = {
   user: null,
@@ -111,22 +111,6 @@ const authSlice = createSlice({
         }
       })
       .addCase(login.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.payload as string;
-      });
-
-    // Verify Email
-    builder
-      .addCase(verifyEmail.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(verifyEmail.fulfilled, (state, action) => {
-        state.isLoading = false;
-        if (action.payload.success && action.payload.user) {
-          state.user = action.payload.user;
-        }
-      })
-      .addCase(verifyEmail.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload as string;
       });

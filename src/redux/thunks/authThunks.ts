@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { authService } from "@/services/authService";
-import { RegisterDTO, LoginDTO, VerifyEmailDTO } from "@/types/auth";
+import { RegisterDTO, LoginDTO } from "@/types/auth";
 import Cookies from "js-cookie";
 import axios from "axios";
 
@@ -82,20 +82,7 @@ export const login = createAsyncThunk(
     } catch (error) {
       return rejectWithValue(handleAuthError(error, "Login failed"));
     }
-  }
-);
 
-export const verifyEmail = createAsyncThunk(
-  "auth/verifyEmail",
-  async (data: VerifyEmailDTO, { rejectWithValue }) => {
-    try {
-      const response = await authService.verifyEmail(data);
-      return response;
-    } catch (error) {
-      return rejectWithValue(
-        handleAuthError(error, "Email verification failed")
-      );
-    }
   }
 );
 

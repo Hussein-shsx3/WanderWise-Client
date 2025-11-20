@@ -2,8 +2,6 @@ import axiosInstance from "@/lib/axios";
 import {
   RegisterDTO,
   LoginDTO,
-  VerifyEmailDTO,
-  ResendVerificationDTO,
   ForgotPasswordDTO,
   ResetPasswordDTO,
   AuthResponse,
@@ -17,16 +15,6 @@ export const authService = {
 
   login: async (data: LoginDTO): Promise<AuthResponse> => {
     const response = await axiosInstance.post("/auth/login", data);
-    return response.data;
-  },
-
-  verifyEmail: async (data: VerifyEmailDTO): Promise<AuthResponse> => {
-    const response = await axiosInstance.post("/auth/verify", data);
-    return response.data;
-  },
-
-  resendVerification: async (data: ResendVerificationDTO): Promise<AuthResponse> => {
-    const response = await axiosInstance.post("/auth/resend-verification", data);
     return response.data;
   },
 
