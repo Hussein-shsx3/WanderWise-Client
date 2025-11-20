@@ -15,6 +15,11 @@ export const register = createAsyncThunk(
   "auth/register",
   async (data: RegisterDTO, { rejectWithValue }) => {
     try {
+      // Clear any previous user's data from localStorage
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("persist:wanderwise-root");
+      }
+
       const response = await authService.register(data);
 
       console.log("Register response:", response);
