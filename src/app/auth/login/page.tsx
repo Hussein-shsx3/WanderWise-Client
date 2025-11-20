@@ -111,42 +111,32 @@ export default function LoginPage() {
       {/* Form */}
       <form onSubmit={handleSubmit} className="space-y-5">
         {/* Email */}
-        <div className="relative">
-          <div className="absolute left-4 top-4 text-white/50">
-            <Mail size={20} />
-          </div>
-          <Input
-            label=""
-            name="email"
-            type="email"
-            placeholder="your@email.com"
-            value={formData.email}
-            onChange={handleChange}
-            error={errors.email}
-            required
-            disabled={isPending}
-            className="pl-12"
-          />
-        </div>
+        <Input
+          label=""
+          name="email"
+          type="email"
+          placeholder="your@email.com"
+          value={formData.email}
+          onChange={handleChange}
+          error={errors.email}
+          required
+          disabled={isPending}
+          icon={<Mail size={20} />}
+        />
 
         {/* Password */}
-        <div className="relative">
-          <div className="absolute left-4 top-4 text-white/50">
-            <Lock size={20} />
-          </div>
-          <Input
-            label=""
-            name="password"
-            type="password"
-            placeholder="••••••••"
-            value={formData.password}
-            onChange={handleChange}
-            error={errors.password}
-            required
-            disabled={isPending}
-            className="pl-12"
-          />
-        </div>
+        <Input
+          label=""
+          name="password"
+          type="password"
+          placeholder="••••••••"
+          value={formData.password}
+          onChange={handleChange}
+          error={errors.password}
+          required
+          disabled={isPending}
+          icon={<Lock size={20} />}
+        />
 
         {/* Remember & Forgot */}
         <div className="flex items-center justify-between text-sm">

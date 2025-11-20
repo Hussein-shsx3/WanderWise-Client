@@ -3,11 +3,13 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Container } from "@/components/Container";
 import { Logo } from "@/components/Logo";
-import { Menu, X } from "lucide-react";
-import { useAppSelector } from "@/redux/hooks";
+import { Menu, X, LogOut } from "lucide-react";
+import { useAppSelector, useAppDispatch } from "@/redux/hooks";
 import { useAuthToken } from "@/hooks/useAuthToken";
+import { logout } from "@/redux/thunks/authThunks";
 import type { RootState } from "@/redux/store";
 
 interface HeaderProps {
@@ -15,6 +17,8 @@ interface HeaderProps {
 }
 
 export const Header: React.FC<HeaderProps> = () => {
+  const router = useRouter();
+  const dispatch = useAppDispatch();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isHydrated, setIsHydrated] = useState(false);
 
@@ -47,6 +51,16 @@ export const Header: React.FC<HeaderProps> = () => {
     setIsMenuOpen(false);
   };
 
+  const handleLogout = async () => {
+    closeMenu();
+    try {
+      await dispatch(logout()).unwrap();
+      router.push("/");
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
+
   return (
     <header className="bg-white shadow-sm sticky top-0 z-50">
       <Container>
@@ -55,7 +69,7 @@ export const Header: React.FC<HeaderProps> = () => {
           <Logo size="md" onClick={closeMenu} />
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-6">
             {isAuthenticated ? (
               <>
                 <Link
@@ -72,10 +86,18 @@ export const Header: React.FC<HeaderProps> = () => {
                 </Link>
                 <Link
                   href="/itineraries/create"
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
                 >
                   Create Trip
                 </Link>
+                <button
+                  onClick={handleLogout}
+                  className="flex items-center gap-2 px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg font-medium transition-colors"
+                  title="Logout"
+                >
+                  <LogOut size={18} />
+                  Logout
+                </button>
               </>
             ) : (
               <>
@@ -87,7 +109,7 @@ export const Header: React.FC<HeaderProps> = () => {
                 </Link>
                 <Link
                   href="/auth/register"
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
                 >
                   Sign Up
                 </Link>
@@ -128,10 +150,17 @@ export const Header: React.FC<HeaderProps> = () => {
                   <Link
                     href="/itineraries/create"
                     onClick={closeMenu}
-                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-center"
+                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-center font-medium"
                   >
                     Create Trip
                   </Link>
+                  <button
+                    onClick={handleLogout}
+                    className="flex items-center justify-center gap-2 px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg font-medium transition-colors w-full"
+                  >
+                    <LogOut size={18} />
+                    Logout
+                  </button>
                 </>
               ) : (
                 <>
@@ -145,7 +174,7 @@ export const Header: React.FC<HeaderProps> = () => {
                   <Link
                     href="/auth/register"
                     onClick={closeMenu}
-                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-center"
+                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-center font-medium"
                   >
                     Sign Up
                   </Link>

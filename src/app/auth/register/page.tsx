@@ -136,99 +136,74 @@ export default function RegisterPage() {
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* Name Fields */}
         <div className="grid grid-cols-2 gap-4">
-          <div className="relative">
-            <div className="absolute left-4 top-4 text-white/50">
-              <User size={20} />
-            </div>
-            <Input
-              label=""
-              name="firstName"
-              type="text"
-              placeholder="First name"
-              value={formData.firstName}
-              onChange={handleChange}
-              error={errors.firstName}
-              required
-              disabled={isPending}
-              className="pl-12"
-            />
-          </div>
+          <Input
+            label=""
+            name="firstName"
+            type="text"
+            placeholder="First name"
+            value={formData.firstName}
+            onChange={handleChange}
+            error={errors.firstName}
+            required
+            disabled={isPending}
+            icon={<User size={20} />}
+          />
 
-          <div className="relative">
-            <div className="absolute left-4 top-4 text-white/50">
-              <User size={20} />
-            </div>
-            <Input
-              label=""
-              name="lastName"
-              type="text"
-              placeholder="Last name"
-              value={formData.lastName}
-              onChange={handleChange}
-              error={errors.lastName}
-              required
-              disabled={isPending}
-              className="pl-12"
-            />
-          </div>
+          <Input
+            label=""
+            name="lastName"
+            type="text"
+            placeholder="Last name"
+            value={formData.lastName}
+            onChange={handleChange}
+            error={errors.lastName}
+            required
+            disabled={isPending}
+            icon={<User size={20} />}
+          />
         </div>
 
         {/* Email */}
-        <div className="relative">
-          <div className="absolute left-4 top-4 text-white/50">
-            <Mail size={20} />
-          </div>
-          <Input
-            label=""
-            name="email"
-            type="email"
-            placeholder="your@email.com"
-            value={formData.email}
-            onChange={handleChange}
-            error={errors.email}
-            required
-            disabled={isPending}
-            className="pl-12"
-          />
-        </div>
+        <Input
+          label=""
+          name="email"
+          type="email"
+          placeholder="your@email.com"
+          value={formData.email}
+          onChange={handleChange}
+          error={errors.email}
+          required
+          disabled={isPending}
+          icon={<Mail size={20} />}
+        />
 
         {/* Password */}
-        <div className="relative">
-          <div className="absolute left-4 top-4 text-white/50">
-            <Lock size={20} />
-          </div>
-          <Input
-            label=""
-            name="password"
-            type="password"
-            placeholder="••••••••"
-            value={formData.password}
-            onChange={handleChange}
-            error={errors.password}
-            required
-            disabled={isPending}
-            className="pl-12"
-          />
-        </div>
+        <Input
+          label=""
+          name="password"
+          type="password"
+          placeholder="••••••••"
+          value={formData.password}
+          onChange={handleChange}
+          error={errors.password}
+          required
+          disabled={isPending}
+          icon={<Lock size={20} />}
+        />
 
         {/* Confirm Password */}
-        <div className="relative">
-          <div className="absolute left-4 top-4 text-white/50">
-            <CheckCircle size={20} />
-          </div>
-          <Input
-            label=""
-            name="confirmPassword"
-            type="password"
-            placeholder="Confirm password"
-            value={formData.confirmPassword}
-            onChange={handleChange}
-            error={errors.confirmPassword}
-            required
-            disabled={isPending}
-            className="pl-12"
-          />
-        </div>
+        <Input
+          label=""
+          name="confirmPassword"
+          type="password"
+          placeholder="Confirm password"
+          value={formData.confirmPassword}
+          onChange={handleChange}
+          error={errors.confirmPassword}
+          required
+          disabled={isPending}
+          icon={<CheckCircle size={20} />}
+        />
 
         {/* Terms */}
         <label className="flex items-start gap-3 text-white/70 cursor-pointer hover:text-white transition">
