@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/buttons/Button";
 import { Input } from "@/components/ui/forms/Input";
 import { Toast } from "@/components/ui/feedback/Toast";
@@ -15,6 +16,7 @@ import Cookies from "js-cookie";
 export default function RegisterPage() {
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const queryClient = useQueryClient();
   const { mutate: register, isPending } = useRegister();
 
   const [formData, setFormData] = useState({
@@ -81,6 +83,9 @@ export default function RegisterPage() {
       {
         onSuccess: (response) => {
           if (response.success && response.user && response.token) {
+            // Clear all React Query cached data
+            queryClient.clear();
+
             // Store token in cookie
             Cookies.set("authToken", response.token, { expires: 7 });
             if (response.refreshToken) {

@@ -52,6 +52,11 @@ export const login = createAsyncThunk(
   "auth/login",
   async (data: LoginDTO, { rejectWithValue }) => {
     try {
+      // Clear any previous user's data from localStorage
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("persist:wanderwise-root");
+      }
+
       const response = await authService.login(data);
 
       console.log("Login response:", response);
@@ -82,7 +87,6 @@ export const login = createAsyncThunk(
     } catch (error) {
       return rejectWithValue(handleAuthError(error, "Login failed"));
     }
-
   }
 );
 
