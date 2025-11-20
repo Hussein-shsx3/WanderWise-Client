@@ -27,17 +27,22 @@ const Home = () => {
             {/* Badge */}
             <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur border border-white/20 rounded-full px-4 py-2">
               <Sparkles size={16} className="text-blue-400" />
-              <span className="text-sm text-white">✨ AI-Powered Travel Planning</span>
+              <span className="text-sm text-white">
+                ✨ AI-Powered Travel Planning
+              </span>
             </div>
 
             {/* Main Heading */}
             <div>
               <h1 className="text-5xl md:text-7xl lg:text-8xl font-semibold text-white mb-6 leading-tight">
-                Your Journey<br />
+                Your Journey
+                <br />
                 <span className="gradient-text">Awaits</span>
               </h1>
               <p className="text-lg md:text-2xl text-white/80 max-w-2xl mx-auto leading-relaxed">
-                Discover amazing destinations with AI-powered itineraries, real-time weather updates, and interactive maps. Plan the perfect trip effortlessly.
+                Discover amazing destinations with AI-powered itineraries,
+                real-time weather updates, and interactive maps. Plan the
+                perfect trip effortlessly.
               </p>
             </div>
 
@@ -101,7 +106,9 @@ const Home = () => {
                   {feature.icon}
                 </div>
                 <h3 className="text-xl font-semibold mb-3">{feature.title}</h3>
-                <p className="text-slate-600 leading-relaxed">{feature.description}</p>
+                <p className="text-slate-600 leading-relaxed">
+                  {feature.description}
+                </p>
               </div>
             ))}
           </div>
@@ -114,7 +121,8 @@ const Home = () => {
         <Container maxWidth="xl" className="relative z-10">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-semibold text-white mb-4">
-              Simple Steps to<br />
+              Simple Steps to
+              <br />
               <span className="gradient-text">Your Perfect Trip</span>
             </h2>
           </div>
@@ -132,7 +140,9 @@ const Home = () => {
                   <div className="mb-4 inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-white font-semibold text-xl">
                     {step.number}
                   </div>
-                  <h3 className="text-lg font-semibold text-white mb-2">{step.title}</h3>
+                  <h3 className="text-lg font-semibold text-white mb-2">
+                    {step.title}
+                  </h3>
                   <p className="text-white/70 text-sm">{step.description}</p>
                 </div>
               </div>
@@ -143,9 +153,14 @@ const Home = () => {
 
       {/* Stats Section */}
       <section className="py-16 relative">
-        <Container maxWidth="xl" className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
+        <Container
+          maxWidth="xl"
+          className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center"
+        >
           <div>
-            <div className="text-5xl font-semibold gradient-text mb-2">10K+</div>
+            <div className="text-5xl font-semibold gradient-text mb-2">
+              10K+
+            </div>
             <p className="text-slate-600">Happy Travelers</p>
           </div>
           <div>
@@ -153,7 +168,9 @@ const Home = () => {
             <p className="text-slate-600">Countries Covered</p>
           </div>
           <div>
-            <div className="text-5xl font-semibold gradient-text mb-2">100K+</div>
+            <div className="text-5xl font-semibold gradient-text mb-2">
+              100K+
+            </div>
             <p className="text-slate-600">Itineraries Created</p>
           </div>
         </Container>
@@ -173,13 +190,20 @@ const Home = () => {
               Ready for Your Next Adventure?
             </h2>
             <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-              Join thousands of travelers discovering amazing destinations with WanderWise
+              Join thousands of travelers discovering amazing destinations with
+              WanderWise
             </p>
-            <Link href="/auth/register">
-              <Button size="lg" variant="secondary" className="bg-white text-blue-600 hover:bg-gray-100">
-                Start Your Journey Today
-              </Button>
-            </Link>
+            <div className="flex justify-center">
+              <Link href="/auth/register">
+                <Button
+                  size="lg"
+                  variant="secondary"
+                  className="bg-white text-blue-600 hover:bg-gray-100"
+                >
+                  Start Your Journey Today
+                </Button>
+              </Link>
+            </div>
           </Container>
         </section>
       )}
@@ -192,19 +216,22 @@ const features = [
     id: 1,
     icon: <Zap size={32} className="text-white" />,
     title: "AI-Powered Planning",
-    description: "Our advanced AI creates personalized itineraries based on your preferences, budget, and travel style.",
+    description:
+      "Our advanced AI creates personalized itineraries based on your preferences, budget, and travel style.",
   },
   {
     id: 2,
     icon: <Cloud size={32} className="text-white" />,
     title: "Live Weather Data",
-    description: "Real-time weather forecasts and alerts to help you pack right and plan activities perfectly.",
+    description:
+      "Real-time weather forecasts and alerts to help you pack right and plan activities perfectly.",
   },
   {
     id: 3,
     icon: <MapPin size={32} className="text-white" />,
     title: "Interactive Maps",
-    description: "Explore destinations visually with beautiful maps, directions, and location-based recommendations.",
+    description:
+      "Explore destinations visually with beautiful maps, directions, and location-based recommendations.",
   },
 ];
 
