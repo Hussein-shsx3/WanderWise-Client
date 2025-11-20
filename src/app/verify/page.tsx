@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Container } from "@/components/Container";
 import { Button } from "@/components/ui/buttons/Button";
@@ -12,7 +12,7 @@ import Cookies from "js-cookie";
 import { useAppDispatch } from "@/redux/hooks";
 import { setAuth } from "@/redux/slices/authSlice";
 
-export default function VerifyPage() {
+function VerifyContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const dispatch = useAppDispatch();
@@ -247,5 +247,17 @@ export default function VerifyPage() {
         </div>
       </Container>
     </div>
+  );
+}
+
+export default function VerifyPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center">
+        <Spinner />
+      </div>
+    }>
+      <VerifyContent />
+    </Suspense>
   );
 }
