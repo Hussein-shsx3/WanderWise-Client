@@ -191,7 +191,7 @@ export default function ItinerariesPage() {
                       </Button>
                     </Link>
                     <button
-                      onClick={(e) => handleDelete(e, itinerary._id)}
+                      onClick={(e) => handleDelete(e, itinerary._id as string)}
                       disabled={deletingId === itinerary._id}
                       className="px-3 py-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 disabled:opacity-50 font-medium text-sm transition-colors flex items-center gap-2"
                       title="Delete itinerary"
