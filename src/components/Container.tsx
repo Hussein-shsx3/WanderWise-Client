@@ -13,7 +13,7 @@ const Container = React.forwardRef<HTMLDivElement, ContainerProps>(
       sm: "max-w-sm",
       md: "max-w-md",
       lg: "max-w-lg",
-      xl: "max-w-6xl",
+      xl: "max-w-7xl",
       full: "w-full",
     };
 
