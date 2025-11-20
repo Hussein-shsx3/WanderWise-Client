@@ -103,7 +103,12 @@ export default function RegisterPage() {
         },
         onError: (error) => {
           const message =
-            typeof error === "string" ? error : "Registration failed";
+            typeof error === "string" 
+              ? error 
+              : (error as any)?.response?.data?.error?.message
+              ? (error as any).response.data.error.message
+              : "Registration failed";
+          console.error("Registration error:", error);
           setToast({ type: "error", message });
         },
       }
