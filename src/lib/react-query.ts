@@ -9,7 +9,7 @@ const queryConfig: QueryClientConfig = {
       refetchOnWindowFocus: false,
     },
     mutations: {
-      retry: 1,
+      retry: 0, // Disable retry for mutations to prevent double submissions
     },
   },
 };
